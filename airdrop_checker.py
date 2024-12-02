@@ -15,8 +15,7 @@ from utils.sui import Sui
 class AirdropChecker:
     def __init__(self, idx, private_key, aptos_private_key, sui_private_key, user_agent, cap_key, proxy):
         self.idx = idx
-        self.evm_address = Account.from_key(private_key).address
-        self.private_key = private_key
+        self.evm = Account.from_key(private_key)
         self.aptos = Aptos(aptos_private_key)
         self.sui = Sui(private_key=sui_private_key)
         self.headers = {
@@ -47,7 +46,7 @@ class AirdropChecker:
 
     def _get_signature(self, message):
         encoded_msg = encode_defunct(text=message)
-        signed_msg = Account().sign_message(encoded_msg, private_key=self.private_key)
+        signed_msg = Account().sign_message(encoded_msg, private_key=self.evm.key)
         signature = signed_msg.signature.hex()
 
         return signature
@@ -131,7 +130,7 @@ class AirdropChecker:
         message = f"Please sign this message to confirm ownership. nonce: {nonce}"
 
         json_data = {
-            'address': self.evm_address,
+            'address': self.evm.address,
             'message': message,
             'signature': self._get_signature(message),
             'chain': 'evm',
