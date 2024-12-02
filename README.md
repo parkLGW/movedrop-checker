@@ -1,5 +1,6 @@
 # movedrop-checker
 airdrop checker for movement
+脚本主要实现注册 evm apt sui账号，社交帐号我没做就没写，有需要可以自行添加
 
 ## config
 
